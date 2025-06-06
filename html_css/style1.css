@@ -1,0 +1,39 @@
+body{
+    background-color: #B7E892;
+}
+
+.btn1{
+    display: block;
+    margin-top: 20px;
+    background-color: #6BBF59;
+    margin-left: 20px;
+    width: 250px;
+    height: 45px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 50px;
+    box-shadow: 1px 1px gray;
+}
+.btn2{
+    display: block;
+    margin-top: 475px;
+    margin-bottom: 15px;
+    width: 250px;
+    height: 40px;
+    margin-left: 20px;
+    background-color: #6BBF59;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 50px;
+    box-shadow: 1px 1px gray;
+}
+.btn3{
+    display: block;
+    margin-top: 45px;
+    margin-bottom: 60px;
+    width: 250px;
+    height: 40px;
+    margin-left: 20px;
+    background-color: #6BBF59;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 50px;
+    box-shadow: 1px 1px gray;
+}
