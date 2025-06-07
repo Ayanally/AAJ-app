@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - Zomato Clone</title>
+</head>
+<body style="margin:0; padding:0; font-family:'Segoe UI', sans-serif; background:linear-gradient(135deg, #ff3f6c, #ff8a00); height:100vh; display:flex; align-items:center; justify-content:center;">
+
+  <div style="background:#fff; padding:40px 30px; border-radius:15px; width:90%; max-width:450px; box-shadow:0 10px 25px rgba(0,0,0,0.2); text-align:center;">
+    
+    <h2 style="margin-bottom:25px; color:#ff3f6c;">Create Account</h2>
+    
+    <form onsubmit="return validateSignupForm()" id="signupForm">
+      <input type="text" id="name" placeholder="Full Name" 
+        style="width:100%; padding:12px 15px; margin-bottom:15px; border:1px solid #ccc; border-radius:8px; font-size:16px;" required>
+
+      <input type="email" id="email" placeholder="Email" 
+        style="width:100%; padding:12px 15px; margin-bottom:15px; border:1px solid #ccc; border-radius:8px; font-size:16px;" required>
+
+      <input type="password" id="password" placeholder="Password" 
+        style="width:100%; padding:12px 15px; margin-bottom:15px; border:1px solid #ccc; border-radius:8px; font-size:16px;" required>
+
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" 
+        style="width:100%; padding:12px 15px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;" required>
+
+      <button type="submit" 
+        style="width:100%; padding:12px; background-color:#ff3f6c; color:#fff; font-size:16px; border:none; border-radius:8px; cursor:pointer;">
+        Sign Up
+      </button>
+    </form>
+
+    <p style="margin-top:20px; font-size:14px;">Already have an account? <a href="login.html" style="color:#ff3f6c; text-decoration:none;">Login</a></p>
+    <p style="margin-top:10px;"><a href="AAJ.html" style="font-size:13px; color:#888; text-decoration:none;">← Back to Home</a></p>
+  </div>
+
+  <script>
+  function validateSignupForm() {
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!name || !email || !password || !confirmPassword) {
+      alert("Please fill in all fields.");
+      return false;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return false;
+    }
+
+    alert("Sign Up Successful!");
+    window.location.href = "frames.html"; // Change to your desired website
+    return false; // Stop actual form submission
+  }
+</script>
+
+</body>
+</html>

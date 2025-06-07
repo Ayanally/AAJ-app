@@ -1,35 +1,79 @@
-const addcart = document.querySelectorAll(".btn");
+let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+const addcartButtons = document.querySelectorAll(".btn");
+const CartContent = document.querySelector(".cart-content");
 
-addcart.forEach(button => {
+addcartButtons.forEach(button => {
     button.addEventListener("click", event => {
         const ProductBox = event.target.closest(".item-box");
-        Addcart (ProductBox);
+        addToCart(ProductBox);
     });
 });
 
-const CartContent = document.querySelector(".cart-content");
-
-Addcart = ProductBox => {
-    const prodimg = ProductBox.querySelector("img").src;
+function addToCart(ProductBox) {
+    const prodImg = ProductBox.querySelector("img").src;
     const prodTitle = ProductBox.querySelector(".product-name").textContent;
 
-    const CartBox = document.createElement("div");
-    CartBox.classList.add("cart-content");
+    let existingItem = cartItems.find(item => item.title === prodTitle);
 
-    CartBox.innerHTML = `
-    <img src="${prodimg}">
+    if (existingItem) {
+        existingItem.qty++;
+    } else {
+        cartItems.push({ img: prodImg, title: prodTitle, qty: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    updateCart();
+}
+
+function updateCart() {
+    CartContent.innerHTML = ""; 
+
+    cartItems.forEach(item => {
+        const CartBox = document.createElement("div");
+        CartBox.classList.add("cart-item");
+
+        CartBox.innerHTML = `
+            <img src="${item.img}" alt="${item.title}" width="50">
             <div class="cart-detail">
-                <h2 class="cart-product-name">${ProdTitle}</h2>
-                <div class="quantity">
-                    <button id="decrement">-</button>
-                    <span id="number">1</span>
-                    <button id="increment">+</button>
+                <h2 class="cart-product-name">${item.title}</h2>
+                <div class="quantity cart-controls">
+                    <button class="qty-btn decrement">-</button>
+                    <span class="qty-value">${item.qty}</span>
+                    <button class="qty-btn increment">+</button>
                 </div>
             </div>
-            <i class="ri-delete-bin-line"></i>
+            <button class="remove-btn">🗑️ Remove</button>
         `;
 
-    CartContent.appendChild(CartBox);
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-};
+        CartContent.appendChild(CartBox);
 
+        const decrementBtn = CartBox.querySelector(".decrement");
+        const incrementBtn = CartBox.querySelector(".increment");
+        const qtyValue = CartBox.querySelector(".qty-value");
+        const removeBtn = CartBox.querySelector(".remove-btn");
+
+        decrementBtn.addEventListener("click", () => {
+            if (item.qty > 1) {
+                item.qty--;
+                qtyValue.textContent = item.qty;
+            } else {
+                cartItems = cartItems.filter(cartItem => cartItem.title !== item.title);
+                updateCart();
+            }
+        });
+
+        incrementBtn.addEventListener("click", () => {
+            item.qty++;
+            qtyValue.textContent = item.qty;
+        });
+
+        removeBtn.addEventListener("click", () => {
+            cartItems = cartItems.filter(cartItem => cartItem.title !== item.title);
+            updateCart();
+        });
+    });
+
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+window.onload = updateCart;
