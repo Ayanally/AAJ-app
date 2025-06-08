@@ -1,38 +1,112 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="style4.css">
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-/>
+  <meta charset="UTF-8">
+  <title>Confirm Your Order</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2ecc71;
+      color: white;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #27ae60;
+    }
+    .payment-section, .order-details {
+      display: none;
+      margin-top: 30px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+    th {
+      background-color: #2ecc71;
+      color: white;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="cart">
-        <h2 class="cart-title">Your Cart</h2>
-        <div class="cart-content">
-            <!-- <img src="C:\Users\siddh\Downloads\new-potato-removebg-preview.png">
-            <div class="cart-detail">
-                <h2 class="cart-product-name">Potato</h2>
-                <span class="cart-price">100rs</span>
-                <div class="quantity">
-                    <button id="decrement">-</button>
-                    <span id="number">1</span>
-                    <button id="increment">+</button>
-                </div>
-            </div>
-            <i class="ri-delete-bin-line"></i> -->
-        </div>
 
-        <div class="total">
-            <div class="total-title">Total</div>
-            <div class="total-price">0rs</div>
-        </div>
-    </div>
+  <h1>Confirm Your Order</h1>
+  <button class="btn" onclick="window.location.href='vegetablesec.html'">Go Back</button>
+  <button class="btn" onclick="showPaymentOptions()">Confirm Order</button>
 
-    <script src="script.js"></script>
+  <!-- Payment options -->
+  <div class="payment-section" id="paymentSection">
+    <h2>Select a Payment Method</h2>
+    <button class="btn" onclick="completeOrder()">UPI</button>
+    <button class="btn" onclick="completeOrder()">Credit Card</button>
+    <button class="btn" onclick="completeOrder()">Cash on Delivery</button>
+  </div>
+
+  <!-- Success and order data -->
+  <div class="order-details" id="orderDetails">
+    <h2>✅ Order Successful</h2>
+    <h3>Order Details</h3>
+    <div id="orderTable">Loading...</div>
+  </div>
+
+  <script>
+    function showPaymentOptions() {
+      document.getElementById('paymentSection').style.display = 'block';
+    }
+
+    function completeOrder() {
+      document.getElementById('paymentSection').style.display = 'none';
+      document.getElementById('orderDetails').style.display = 'block';
+
+      fetch('https://sheetdb.io/api/v1/32bokjrxk8149')
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('orderTable');
+
+          if (data.length === 0) {
+            container.innerHTML = "<p>No order details found.</p>";
+            return;
+          }
+
+          const latestEntry = data[data.length - 1]; // Show only the last entry
+
+          // Filter out unwanted columns like 'is_updated'
+          const displayColumns = Object.keys(latestEntry).filter(key => key.toLowerCase() !== 'is_updated');
+
+          let table = "<table><tr>";
+          displayColumns.forEach(key => {
+            table += `<th>${key}</th>`;
+          });
+          table += "</tr><tr>";
+          displayColumns.forEach(key => {
+            table += `<td>${latestEntry[key]}</td>`;
+          });
+          table += "</tr></table>";
+
+          container.innerHTML = table;
+        })
+        .catch(error => {
+          document.getElementById('orderTable').innerHTML = "Failed to load order details.";
+          console.error("Error fetching data:", error);
+        });
+    }
+  </script>
+
 </body>
 </html>
