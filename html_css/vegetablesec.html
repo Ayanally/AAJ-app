@@ -1,55 +1,236 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <link rel="stylesheet" href="style3.css">
+  <title>Vegetable Shop with Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .itemlist {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .item-box {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 200px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-name {
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 18px;
+      color: #34495e;
+    }
+
+    .cart button {
+      background-color: #27ae60;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .cart button:hover {
+      background-color: #1e8449;
+    }
+
+    #viewCartBtn, #goToCartBtn {
+      margin-top: 20px;
+      background-color: #27ae60;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+      margin-right: 10px;
+    }
+
+    #updatedData {
+      display: none;
+      margin-top: 30px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .remove-btn, .qty-btn {
+      background-color: #e67e22;
+      color: white;
+      padding: 5px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .remove-btn {
+      background-color: #e74c3c;
+    }
+
+    #totalBill {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #2c3e50;
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="itemlist">
-        <div class="item-box">
-            <div class="img-box">
-                <img src="C:\Users\siddh\Downloads\new-potato-removebg-preview.png">
-            </div>
-                <div class="product-name">Potato</div>
-                <div class="cart">
-                    <button class="btn">Add to cart</button>
-                </div>
-        </div>
 
-        <div class="item-box">
-            <div class="img-box">
-                <img src="C:\Users\siddh\Downloads\Tomato-plants-removebg-preview.png">
-            </div>
-            <div class="product-name">Tomato</div>
-            <div class="cart">
-                <button class="btn">Add to cart</button>
-            </div>
-        </div>
+  <h1>Vegetable Shop</h1>
 
-        <div class="item-box">
-            <div class="img-box">
-                <img src="C:\Users\siddh\Downloads\greencapsicum-removebg-preview.png">
-            </div>
-            <div class="product-name">Capsicum</div>
-            <div class="cart">
-                <button class="btn">Add to cart</button>
-            </div>
-        </div>
-
-        <div class="item-box">
-            <div class="img-box">
-                <img src="C:\Users\siddh\Downloads\R-removebg-preview.png">
-            </div>
-            <div class="product-name">Onion</div>
-            <div class="cart">
-                <button class="btn">Add to cart</button>
-            </div>
-        </div>
-
+  <div class="itemlist">
+    <div class="item-box">
+      <img src="potato.png" width="100"><br>
+      <div class="product-name">Potato</div>
+      <div class="cart">
+        <button class="add-to-cart" data-name="Potato" data-price="35">Add to cart</button>
+      </div>
     </div>
+    <div class="item-box">
+      <img src="tomato.png" width="100"><br>
+      <div class="product-name">Tomato</div>
+      <div class="cart">
+        <button class="add-to-cart" data-name="Tomato" data-price="40">Add to cart</button>
+      </div>
+    </div>
+    <div class="item-box">
+      <img src="capsicum.png" width="100"><br>
+      <div class="product-name">Capsicum</div>
+      <div class="cart">
+        <button class="add-to-cart" data-name="Capsicum" data-price="50">Add to cart</button>
+      </div>
+    </div>
+    <div class="item-box">
+      <img src="onion.png" width="100"><br>
+      <div class="product-name">Onion</div>
+      <div class="cart">
+        <button class="add-to-cart" data-name="Onion" data-price="30">Add to cart</button>
+      </div>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <button id="viewCartBtn">View Cart</button>
+  <button id="goToCartBtn">Total Bill</button>
+
+  <div id="updatedData">
+    <h2>Your Cart</h2>
+    <div id="dataContainer"></div>
+    <div id="totalBill"></div>
+  </div>
+
+  <script>
+    const prices = { Potato: 35, Tomato: 40, Capsicum: 50, Onion: 30 };
+    const viewCartBtn = document.getElementById("viewCartBtn");
+    const goToCartBtn = document.getElementById("goToCartBtn");
+    const updatedSection = document.getElementById("updatedData");
+    const dataContainer = document.getElementById("dataContainer");
+    const totalBill = document.getElementById("totalBill");
+
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+      button.addEventListener("click", () => {
+        const product = button.getAttribute("data-name");
+        const price = prices[product];
+
+        const cartData = {
+          Name: "User",
+          Category: product,
+          Quantity: "1",
+          Cost: price,
+          is_updated: "true"
+        };
+
+        fetch("https://sheetdb.io/api/v1/32bokjrxk8149", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: cartData })
+        }).then(() => {
+          alert(product + " added to cart!");
+          viewCartBtn.style.display = "inline-block";
+          goToCartBtn.style.display = "inline-block";
+        });
+      });
+    });
+
+    viewCartBtn.addEventListener("click", async () => {
+      const res = await fetch("https://sheetdb.io/api/v1/32bokjrxk8149/search?is_updated=true");
+      const data = await res.json();
+      dataContainer.innerHTML = "";
+      let total = 0;
+
+      data.forEach(item => {
+        const quantity = parseInt(item.Quantity);
+        const price = prices[item.Category];
+        const subtotal = quantity * price;
+        total += subtotal;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.innerHTML = `
+          <strong>Item:</strong> ${item.Category}<br>
+          <strong>Quantity:</strong> ${quantity}
+          <button class="qty-btn" onclick="updateQuantity('${item.Category}', ${quantity + 1})">+</button>
+          <button class="qty-btn" onclick="updateQuantity('${item.Category}', ${quantity - 1})">-</button><br>
+          <strong>Subtotal:</strong> Rs. ${subtotal}<br>
+          <button class="remove-btn" onclick="removeItem('${item.Category}')">Remove</button>
+          <hr>
+        `;
+        dataContainer.appendChild(itemDiv);
+      });
+
+      totalBill.textContent = `Total Bill: Rs. ${total}`;
+      updatedSection.style.display = "block";
+    });
+
+    function updateQuantity(category, newQty) {
+      if (newQty <= 0) return removeItem(category);
+
+      const price = prices[category];
+      const cartData = {
+        Quantity: newQty.toString(),
+        Cost: price * newQty,
+        is_updated: "true"
+      };
+
+      fetch(`https://sheetdb.io/api/v1/32bokjrxk8149/Category/${category}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: cartData })
+      }).then(() => viewCartBtn.click());
+    }
+
+    function removeItem(category) {
+      fetch(`https://sheetdb.io/api/v1/32bokjrxk8149/Category/${category}`, {
+        method: "DELETE"
+      }).then(() => viewCartBtn.click());
+    }
+
+    goToCartBtn.addEventListener("click", () => {
+      window.location.href = "cart.html";
+    });
+  </script>
 </body>
-
 </html>
