@@ -46,6 +46,7 @@ body{
 
 .container3 img{
     border-radius: 15px;
+    margin-left: 50px;
 }
 .container3 img:hover{
     width: 190px;
@@ -136,5 +137,3 @@ body{
     width: 100px;
     height: 100px;
 }
-
-

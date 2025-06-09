@@ -39,11 +39,10 @@
 //     </script>
 // </body>
 // </html>
-function getRecipe() {
-    const food = document.getElementById('foodInput').value;
+function getRecipe(food) {
     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${food}`;
 
-    const topVegetables = ["Potato", "Tomato", "Onion", "Cauliflower", "Okra", "Cabbage", "Bitter Gourd", "Spinach", "Eggplant", "Green Peas"];
+    const topVegetables = ["Potato", "Tomato", "Onion", "Cauliflower", "Okra", "Cabbage", "Bitter Gourd", "Spinach", "Eggplant", "Green Peas", "Capsicum"];
 
     fetch(url)
         .then(response => response.json())
@@ -64,4 +63,14 @@ function getRecipe() {
             }
         })
         .catch(error => console.error('Error fetching recipe:', error));
+}
+
+// Function to search recipe when user enters food name
+function searchRecipe() {
+    const food = document.getElementById('foodInput').value.trim();
+    if (food) {
+        getRecipe(food);
+    } else {
+        alert("Please enter a food name!");
+    }
 }
